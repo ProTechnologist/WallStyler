@@ -1,0 +1,128 @@
+
+    
+    .green {
+      background-color: #00B514 !important;
+    }
+    
+    .orange {
+      background-color: #FFB52C !important;
+    }
+    
+    .blue {
+      background-color: #00AAFF !important;
+    }
+    
+    .set-as-wallpaper {
+      background-image: url('icons/SetAsWallpaper.png');
+      height: 32px;
+      width: 32px;
+      display: block;
+      margin: 10px;
+    }
+    
+    .download {
+      background-image: url('icons/download.png');
+      height: 32px;
+      width: 32px;
+      float: right;
+      bottom: 40px;
+      position: relative;
+      right: 10px;
+    }
+    
+    .delete {
+      background-image: url('icons/delete.png');
+      height: 32px;
+      width: 32px;
+      float: right;
+      bottom: 40px;
+      position: relative;
+      right: 10px;
+    }
+    
+    .wallpapers {
+      text-align: center;
+      margin-top: 115px;
+    }
+    
+    .wallpaper {
+      display: inline-block;
+      margin: 10px;
+    }
+    
+    .wallpaper-image {
+      box-shadow: #676767 0px 0px 10px 0px;
+      border-radius: 3px;
+    }
+    
+    .wallpaper:hover .actions {
+      display: block;
+      background-color: rgba(0, 0, 0, 0.3);
+      border-radius: 0 0 20px 22px;
+    }
+    
+    .wallpaper:hover .actions span {
+      position: relative;
+      bottom: 40px;
+      left: 15px;
+      font-size: 16px;
+      color: white;
+      transition: height 5s;
+      -webkit-transition: height 5s;
+    }
+    
+    .wallpaper .actions {
+      display: none;
+      width: 300px;
+      height: 50px;
+      position: absolute;
+    }
+    
+    .wallpaper .action {
+      font-size: 30px;
+      color: white;
+      box-shadow: #1C1E22 0px 0px 10px 5px;
+      border-radius: 15px;
+      position: relative;
+      top: 10px;
+    }
+    
+    .wallpaper .save {
+      left: 10px;
+    }
+    
+    .download-style {
+      position: absolute;
+      margin-left: 7px;
+      width: 285px;
+      margin-top: -30px;
+      display: block;
+      box-shadow: white 0px 0px 10px 2px;
+    }
+    
+    .loading {
+      margin: 25px 0 30px 0;
+      box-shadow: #FFFFFF 0px 0px 10px 5px;
+      border-radius: 5px;
+      height: 20px;
+    }
+    
+    .footer {
+      position: absolute;
+      bottom: 0px;
+      width: 100%;
+      height: 30px;
+      background-color: #1C1E22;
+      box-shadow: #676767 0px 0px 10px 0px;
+    }
+    
+    .footer .status-box {
+      float: left;
+      border-right: 1px solid #000000;
+      height: 100%;
+      padding: 7px 5px 5px 0;
+      border-left: 1px solid #383838;
+      padding-left: 5px;
+      font-size: 0.85em;
+      min-width: 150px;
+    }
