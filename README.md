@@ -16,7 +16,7 @@ In future additional sources may be added. Moreover, this software will allow yo
 Following Features are supported:
 
 * Responsive Online Wallpaper Gallery.
-* Responsive Offline Wallpaper Gallery.
+* Responsive Offline Wallpaper Gallery (shows all wallpapers even within the folders up to one level - infinite levels coming soon).
 * Capability of downloading multiple wallpapers supported.
 * Capability of setting image as desktop wallpaper (wallpaper will be downloaded if not found in configured folder/directory)
 * Infinite scrolling.
