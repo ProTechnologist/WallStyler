@@ -15,10 +15,11 @@ In future additional sources may be added. Moreover, this software will allow yo
 
 Following Features are supported:
 
+* Built using web technologies with responsive layout.
 * Responsive Online Wallpaper Gallery.
 * Responsive Offline Wallpaper Gallery (shows all wallpapers even within the folders up to one level - infinite levels coming soon).
-* Capability of downloading multiple wallpapers supported.
-* Capability of setting image as desktop wallpaper (wallpaper will be downloaded if not found in configured folder/directory)
+* Capability of downloading multiple wallpapers simultaneously.
+* Capability of setting image as desktop wallpaper (wallpaper will be downloaded if not found in configured folder/directory). This feature is supported on windows, mac and linux.
 * Infinite scrolling.
 * Wallpaper slideshow for available wallpaper (supporting full-screen mode)
 * touch-Swype Gestures are supported while viewing wallpapers in slide show mode.
