@@ -10,3 +10,15 @@ In addition, this application also acts as wallpaper manager and provides you th
 WallStyler, at present, uses the wallpaper collection from WallHaven.
 
 In future additional sources may be added. Moreover, this software will allow you to view your acocunt's wallpapers/images from online sources like WallHaven.
+
+<a href="http://www.freeimagehosting.net/commercial-photography/illinois/chicago/"><img src="http://i.imgur.com/N4L9DDO.png" alt="Chicago commercial photographers"></a>
+
+Following Features are supported:
+
+* Responsive Online Wallpaper Gallery.
+* Responsive Offline Wallpaper Gallery.
+* Capability of downloading multiple wallpapers supported.
+* Capability of setting image as desktop wallpaper (wallpaper will be downloaded if not found in configured folder/directory)
+* Infinite scrolling.
+* Wallpaper slideshow for available wallpaper (supporting full-screen mode)
+* touch-Swype Gestures are supported while viewing wallpapers in slide show mode.
