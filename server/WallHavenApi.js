@@ -168,10 +168,19 @@ function load(url, loadCompletedCallback) {
   fetchIDs(url, loadCompletedCallback);
 };
 
-// responsible for updating system wallpaper.
+// responsible for updating system wallpaper.0
 function validateAndSetWallpaper(wallpaper, callback) {
+  // computing search pattern based on the input and the origin.
+  var searchPattern = '';
+  if(wallpaper.id == undefined) {
+    searchPattern = path.basename(wallpaper.path);
+  }
+  else {
+    searchPattern = wallpaper.id + '.*';
+  }
+  
   // checking if wallpaper is already available.
-  finder.in(store.get('wallpaperPath').toString()).findFiles(wallpaper.id + '.*', function (files) {
+  finder.in(store.get('wallpaperPath').toString()).findFiles(searchPattern, function (files) {
     // wallpaper doesn't already exists, let's download first and then set system wallpaper.
     if (files.length == 0) {
       downloadWallpaper(wallpaper, function (localPath) {
