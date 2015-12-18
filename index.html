@@ -152,14 +152,8 @@
             <p>You can view your existing wallpaper collection within this application if you select the folder/directory path to your wallpaper collection folder. Try it, it should be fun :-)</p>
               </div>
               <div class="tab-pane fade" id="Scheduler">
-                
-                
-                
-                
-                
                 <div class="row">
                   <div class="col-md-12">
-                    
                     <!--first control-->
                     <div class="form-horizontal">
                       <div class="form-group">
@@ -240,35 +234,55 @@
                         </div>
                       </div>
                     </div>
-                    
-                    
-                    
                   </div>
                 </div>
-                
-                
-                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                
-                
-                
-                
-                
-                
-                
               </div>
-              <div class="tab-pane fade" id="Others">Filter criteria goes here</div>
+              <div class="tab-pane fade" id="Others">
+                <!--info control-->
+                <div class="form-horizontal">
+                  <h3>Information:</h3>
+                  <p>Here, you can specify the filters used to fetch the wallpapers which will be applied using automatic wallpaper changer. Following options works only when you wish to download new wallpapers automatically and then use them as desktop wallpapers seemlessly.</p>
+                </div>
+                <!--first control-->
+                <div class="form-horizontal">
+                  <div class="form-group">
+                    <label class="control-label col-md-4" form="ctrl">Automatic Wallpaper Changer Filters</label>
+                    <div class="col-md-8">
+                      <div class="checkbox">
+                        <label>
+                          <input type="checkbox"></input> Use wallpapers which are already available in my computer.
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!--second control-->
+                <div class="form-horizontal">
+                  <div class="form-group">
+                    <label class="control-label col-md-4" form="ctrl"></label>
+                    <div class="col-md-8">
+                      <div class="checkbox">
+                        <label>
+                          <input type="checkbox"></input> Use Online <b>Random Filter</b> Wallpapers
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!third control-->
+                <div class="form-horizontal">
+                  <div class="form-group">
+                    <label class="control-label col-md-4" form="ctrl"></label>
+                    <div class="col-md-8">
+                      <div class="checkbox">
+                        <label>
+                          <input type="checkbox"></input> Use Online <b>Latest</b> Wallpapers
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
             
             <!--end of test code -->
@@ -439,6 +453,7 @@
         
         // showing about modal dialog
         //$("#aboutModal").modal('show');
+        $("#settingsModal").modal('show');
         
       // tooltip plugin
         $('[data-toggle="tooltip"]').tooltip({ container: 'body' });
