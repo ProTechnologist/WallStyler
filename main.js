@@ -24,8 +24,8 @@ app.on('ready', function() {
   // Create the browser window.
   mainWindow = new BrowserWindow({width: 800, height: 600, 'min-width': 800, 'min-height':400 });
   
-  mainWindow.setMenu(null);
-  //mainWindow.openDevTools();
+  //mainWindow.setMenu(null);
+  mainWindow.openDevTools();
 
   // and load the index.html of the app.
   mainWindow.loadUrl('file://' + __dirname + '/index.html');

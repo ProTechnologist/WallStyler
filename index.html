@@ -11,6 +11,19 @@
   <!--fullsizable stylesheets-->
   <link rel="stylesheet" type="text/css" href="app_modules/fullsizable/css/jquery-fullsizable.css"></link>
   <link rel="stylesheet" type="text/css" href="app_modules/fullsizable/css/jquery-fullsizable-theme.css"></link>
+  <link rel="stylesheet" type="text/css" href="app_modules/bootstrap-timepicker/css/bootstrap-timepicker.css"></link>
+  
+  <style>
+    .tab-content {
+      padding: 15px 15px 0 0;
+    }
+    .form-control {
+        background-color: #1c1e22;
+        border: 1px solid #0c0d0e;
+        color: white;
+    }
+  </style>
+  
 </head>
 
 <body ng-controller="appCtrl" style="background-color:#1C1E22">
@@ -108,16 +121,28 @@
     </div>
     </div>
     
+    
     <!-- settings modal dialog -->
     <div class="modal fade" id="settingsModal">
-      <div class="modal-dialog">
+      <div class="modal-dialog" style="width: 900px">
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal"> X </button>
             <h4 class="modal-title">Application Settings</h4>
           </div>
           <div class="modal-body">
-            <p>Wallpapers will be downloaded at following location:</p>
+            
+            <!--Start of test code -->
+            
+            <ul class="nav nav-tabs">
+              <li class="active"><a href="#DownloadPath" data-toggle="tab">Download Folder</a></li>
+              <li><a href="#Scheduler" data-toggle="tab">Auto. Wallpaper Changer - Schedule</a></li>
+              <li><a href="#Others" data-toggle="tab">Auto. Wallpaper Changer - Filters</a></li>
+            </ul>
+            
+             <div class="tab-content">
+              <div class="tab-pane fade in active" id="DownloadPath">
+                <p>Wallpapers will be downloaded at following location:</p>
             <div class="well">
               {{localFolderPath}}
             </div>
@@ -125,6 +150,137 @@
             <hr>
             <p><b>Note:</b></p>
             <p>You can view your existing wallpaper collection within this application if you select the folder/directory path to your wallpaper collection folder. Try it, it should be fun :-)</p>
+              </div>
+              <div class="tab-pane fade" id="Scheduler">
+                
+                
+                
+                
+                
+                <div class="row">
+                  <div class="col-md-12">
+                    
+                    <!--first control-->
+                    <div class="form-horizontal">
+                      <div class="form-group">
+                        <label class="control-label col-md-3" form="ctrl"></label>
+                        <div class="col-md-7">
+                          <div class="checkbox">
+                            <label>
+                              <input type="checkbox"></input> Enable Auto Wallpaper changer
+                            </label>
+                          </div>
+                        </div>
+                        <div class="col-md-2">
+                          <a href="#" class="btn btn-default">Add New Rule</a>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <!--middle control-->
+                    <div class="form-horizontal">
+                      <div class="form-group">
+                        <label class="control-label col-md-3" form="ctrl"></label>
+                        <div class="col-md-9">
+                          <div class="checkbox">
+                            <label>
+                              <input type="checkbox"></input> Change wallpaper on WallStyler Startup.
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    
+                    <!--second control-->
+                    <div class="form-horizontal">
+                      <div class="form-group">
+                        <label class="control-label col-md-3" form="ctrl">Schedule Rule</label>
+                        <div class="col-md-3">
+                          <select class="form-control">
+                            <option>Every</option>
+                            <option>At</option>
+                          </select>
+                        </div>
+                        <div class="col-md-2">
+                          <input type="number" class="form-control" />
+                        </div>
+                        <div class="col-md-2">
+                          <select class="form-control">
+                            <option>Second(s)</option>
+                            <option>hour(s)</option>
+                            <option>day(s)</option>
+                          </select>
+                        </div>
+                        <div class="col-md-2">
+                          <a href="#" class="btn btn-default">Remove </a>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <!-- third control-->
+                    <div class="form-horizontal">
+                      <div class="form-group">
+                        <label class="control-label col-md-3" form="ctrl">Schedule Rule</label>
+                        <div class="col-md-3">
+                          <select class="form-control">
+                            <option>Every</option>
+                            <option selected="selected">At</option>
+                          </select>
+                        </div>
+                        
+                        <div class="col-md-2 bootstrap-timepicker timepicker">
+                            <input type="text" class="form-control timepicker">
+                        </div>
+                        <div class="col-md-2 bootstrap-timepicker timepicker">
+                            <p class="control-label" style="text-align: center">Everyday </p>
+                        </div>
+                        <div class="col-md-2">
+                          <a href="#" class="btn btn-default">Remove</a>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    
+                    
+                  </div>
+                </div>
+                
+                
+                
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                
+                
+                
+                
+                
+                
+                
+              </div>
+              <div class="tab-pane fade" id="Others">Filter criteria goes here</div>
+            </div>
+            
+            <!--end of test code -->
+            
+            <!--<p>Wallpapers will be downloaded at following location:</p>
+            <div class="well">
+              {{localFolderPath}}
+            </div>
+            <button class="btn btn-default" ng-click="showFolderDialog()" >Change Folder</button>
+            <hr>
+            <p><b>Note:</b></p>
+            <p>You can view your existing wallpaper collection within this application if you select the folder/directory path to your wallpaper collection folder. Try it, it should be fun :-)</p>-->
           </div>
           <div class="modal-footer">
             <button type="button" ng-click="cancelFolderPathChange()" class="btn btn-default" data-dismiss="modal">Cancel</button>
@@ -276,12 +432,13 @@
 
     <script src="js/app.js"></script>
     <script src="js/controllers.js"></script>
+    <script src="./app_modules/bootstrap-timepicker/js/bootstrap-timepicker.js"></script>
 
     <script>
       $(function() {
         
         // showing about modal dialog
-        $("#aboutModal").modal('show');
+        //$("#aboutModal").modal('show');
         
       // tooltip plugin
         $('[data-toggle="tooltip"]').tooltip({ container: 'body' });
@@ -290,6 +447,8 @@
               angular.element($('div.wallpapers').scope().loadMore());
           }
         };
+        
+        $('.timepicker').timepicker();
       });
       
       function enableGallery() {
