@@ -270,7 +270,8 @@ var appCtrl = WallStyler.controller('appCtrl', ['$scope', 'toastr', '$window', f
             pulseType: 'hours'
         });
         
-        // following function is a work-around to enable time-picker on the schedular.
+        // following function is a work-around to enable time-picker on the schedular
+        // when dynamic entries are added to the as well as the the $scope.
         // a better solution search is pending after the feature is completed.
         setTimeout(function() {
             $('.timepicker').timepicker();
