@@ -64,20 +64,47 @@ function getWallpaperUrl(id, ext) {
 
 // Responsible for creating default config file and folder if file and/or folder doesn't already exists for wallpapers.
 function checkConfig(callback) {
-  if (store.size == 0 || store.get('wallpaperPath') == null) {
-    store.all = {
-      wallpaperPath: './/wallpapers'
-    }
+    
+  if (store.size == 0) {
+      
+    // creating default settings object.
+    var settings = new Object();
+    
+    //download path settings // shown in the first tab
+    settings.downloadPath = './/wallpapers';
+    
+    //Automatic wallpaper changer scheduler settings
+    settings.scheduler = new Object();
+    settings.scheduler.enableWallpaperChanger = false;
+    settings.scheduler.changeOnStartup = false;
+    
+    // automatic wallpaper changer - scheduler for wallpaper
+    settings.scheduler.rules = [];
+    
+    // automatic wallpaper changer - selection for wallpapers that will be used to set as desktop wallpapers
+    settings.filters = new Object();    
+    settings.filters.useOfflineWallpapers = false;
+    settings.filters.useRandomWallpapers = false;
+    settings.filters.useLatestWallpapers = false;
+    
+    
+    
+    store.set('settings', settings);
+  }
+  else {
+      settings = store.get('settings');
   }
 
-  pathExists(store.get('wallpaperPath').toString()).then(function (exists) {
+  pathExists(settings.downloadPath).then(function (exists) {
     if (!exists) {
       // wallpaper folder does not exists, lets create one,
-      fs.mkdirSync(store.get('wallpaperPath'));
+      fs.mkdirSync(settings.downloadPath);
     }
   });
-
-  callback(ToDisplayPath(store.get('wallpaperPath').toString()));
+  
+  //callback(ToDisplayPath(store.get('wallpaperPath').toString()));
+  settings.downloadPath = ToDisplayPath(settings.downloadPath);
+  callback(settings);
 }
 
 // responsible for getting downloaded wallpapers (including first level folders/directories)
@@ -106,8 +133,8 @@ function getDownloadedWallpapers(callback) {
 }
 
 // responsible for updating folder/directory path where wallpapers will be stored.
-function updateWallpaperPath(newPath, callback) {
-  store.set('wallpaperPath', newPath);
+function saveChanges(settings, callback) {
+  store.set('settings', settings);
   callback();
 }
 
@@ -135,8 +162,8 @@ function ToLocalURL(files, callback) {
 }
 
 // responsible for getting wallpaper storage folder/directory path where wallpapers will be stored.
-function getWallpaperPath(callback) {
-  callback(store.get('wallpaperPath'));
+function getSettings(callback) {
+  callback(store.get('settings'));
 }
 
 // responsible for getting wallpaper's absolute path.
@@ -216,8 +243,8 @@ module.exports.downloadWallpaper = downloadWallpaper;
 module.exports.getDownloadedWallpapers = getDownloadedWallpapers;
 module.exports.init = checkConfig;
 module.exports.setWallpaper = validateAndSetWallpaper;
-module.exports.updateWallpaperPath = updateWallpaperPath;
-module.exports.getWallpaperPath = getWallpaperPath;
+module.exports.saveChanges = saveChanges;
+module.exports.getSettings = getSettings;
 module.exports.deleteWallpaper = deleteWallpaper;
 
 

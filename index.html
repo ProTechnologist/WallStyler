@@ -131,20 +131,16 @@
             <h4 class="modal-title">Application Settings</h4>
           </div>
           <div class="modal-body">
-            
-            <!--Start of test code -->
-            
             <ul class="nav nav-tabs">
               <li class="active"><a href="#DownloadPath" data-toggle="tab">Download Folder</a></li>
               <li><a href="#Scheduler" data-toggle="tab">Auto. Wallpaper Changer - Schedule</a></li>
               <li><a href="#Others" data-toggle="tab">Auto. Wallpaper Changer - Filters</a></li>
             </ul>
-            
              <div class="tab-content">
               <div class="tab-pane fade in active" id="DownloadPath">
                 <p>Wallpapers will be downloaded at following location:</p>
             <div class="well">
-              {{localFolderPath}}
+              {{settings.downloadPath}}
             </div>
             <button class="btn btn-default" ng-click="showFolderDialog()" >Change Folder</button>
             <hr>
@@ -158,15 +154,12 @@
                     <div class="form-horizontal">
                       <div class="form-group">
                         <label class="control-label col-md-3" form="ctrl"></label>
-                        <div class="col-md-7">
+                        <div class="col-md-5">
                           <div class="checkbox">
                             <label>
-                              <input type="checkbox"></input> Enable Auto Wallpaper changer
+                              <input ng-model="settings.scheduler.enableWallpaperChanger" type="checkbox"></input> Enable Auto Wallpaper changer
                             </label>
                           </div>
-                        </div>
-                        <div class="col-md-2">
-                          <a href="#" class="btn btn-default">Add New Rule</a>
                         </div>
                       </div>
                     </div>
@@ -175,62 +168,49 @@
                     <div class="form-horizontal">
                       <div class="form-group">
                         <label class="control-label col-md-3" form="ctrl"></label>
-                        <div class="col-md-9">
+                        <div class="col-md-5">
                           <div class="checkbox">
                             <label>
-                              <input type="checkbox"></input> Change wallpaper on WallStyler Startup.
+                              <input ng-model="settings.scheduler.changeOnStartup" type="checkbox"></input> Change wallpaper on WallStyler Startup.
                             </label>
                           </div>
                         </div>
-                      </div>
-                    </div>
-                    
-                    
-                    <!--second control-->
-                    <div class="form-horizontal">
-                      <div class="form-group">
-                        <label class="control-label col-md-3" form="ctrl">Schedule Rule</label>
-                        <div class="col-md-3">
-                          <select class="form-control">
-                            <option>Every</option>
-                            <option>At</option>
-                          </select>
-                        </div>
-                        <div class="col-md-2">
-                          <input type="number" class="form-control" />
-                        </div>
-                        <div class="col-md-2">
-                          <select class="form-control">
-                            <option>Second(s)</option>
-                            <option>hour(s)</option>
-                            <option>day(s)</option>
-                          </select>
-                        </div>
-                        <div class="col-md-2">
-                          <a href="#" class="btn btn-default">Remove </a>
+                        <div class="col-md-4">
+                          <a href="#" class="btn btn-default" ng-click="addNewScheduleRule()" style="margin-left:9px;">Add New Time Schedule Rule</a>
                         </div>
                       </div>
                     </div>
                     
-                    <!-- third control-->
-                    <div class="form-horizontal">
-                      <div class="form-group">
-                        <label class="control-label col-md-3" form="ctrl">Schedule Rule</label>
-                        <div class="col-md-3">
-                          <select class="form-control">
-                            <option>Every</option>
-                            <option selected="selected">At</option>
-                          </select>
-                        </div>
+                    <!--Schedule rule filter -->
+                    <div class="form-horizontal" ng-repeat="rule in settings.scheduler.rules">
                         
-                        <div class="col-md-2 bootstrap-timepicker timepicker">
-                            <input type="text" class="form-control timepicker">
+                      <div class="form-group">
+                        <label class="control-label col-md-3" form="ctrl">Schedule Rule</label>
+                        <div class="col-md-3">
+                          <select class="form-control" ng-model="rule.type">
+                            <option value="every">Every</option>
+                            <option value="at">At</option>
+                          </select>
                         </div>
-                        <div class="col-md-2 bootstrap-timepicker timepicker">
-                            <p class="control-label" style="text-align: center">Everyday </p>
+                        <div class="col-md-2" ng-show="rule.type == 'every'">
+                          <input type="number" class="form-control" ng-model="rule.pulse" />
+                        </div>
+                        <div class="col-md-2 bootstrap-timepicker timepicker" ng-show="rule.type == 'at'">
+                            <input type="text" class="form-control timepicker" ng-model="rule.time">
+                        </div>
+                        <div class="col-md-2" ng-show="rule.type == 'every'">
+                          <select class="form-control" ng-model="rule.pulseType">
+                            <option value="seconds">Second(s)</option>
+                            <option value="minutes">Minute(s)</option>
+                            <option value="hours">hour(s)</option>
+                            <option value="days">day(s)</option>
+                          </select>
+                        </div>
+                        <div class="col-md-2" ng-show="rule.type == 'at'">
+                          <p class="control-label" style="text-align: center">Everyday </p>
                         </div>
                         <div class="col-md-2">
-                          <a href="#" class="btn btn-default">Remove</a>
+                          <a href="#" class="btn btn-default" ng-click="removeScheduleRule(rule)">Remove </a>
                         </div>
                       </div>
                     </div>
@@ -238,11 +218,13 @@
                 </div>
               </div>
               <div class="tab-pane fade" id="Others">
+                  
                 <!--info control-->
                 <div class="form-horizontal">
                   <h3>Information:</h3>
                   <p>Here, you can specify the filters used to fetch the wallpapers which will be applied using automatic wallpaper changer. Following options works only when you wish to download new wallpapers automatically and then use them as desktop wallpapers seemlessly.</p>
                 </div>
+                
                 <!--first control-->
                 <div class="form-horizontal">
                   <div class="form-group">
@@ -250,7 +232,7 @@
                     <div class="col-md-8">
                       <div class="checkbox">
                         <label>
-                          <input type="checkbox"></input> Use wallpapers which are already available in <b>Download Folder</b>.
+                          <input ng-model="settings.filters.useOfflineWallpapers" type="checkbox"></input> Use wallpapers which are already available in <b>Download Folder</b>.
                         </label>
                       </div>
                     </div>
@@ -264,20 +246,21 @@
                     <div class="col-md-8">
                       <div class="checkbox">
                         <label>
-                          <input type="checkbox"></input> Use Online <b>Random Filter</b> Wallpapers
+                          <input ng-model="settings.filters.useRandomWallpapers" type="checkbox"></input> Use Online <b>Random</b> Wallpapers
                         </label>
                       </div>
                     </div>
                   </div>
                 </div>
-                <!third control-->
+                
+                <!-- third control-->
                 <div class="form-horizontal">
                   <div class="form-group">
                     <label class="control-label col-md-4" form="ctrl"></label>
                     <div class="col-md-8">
                       <div class="checkbox">
                         <label>
-                          <input type="checkbox"></input> Use Online <b>Latest</b> Wallpapers
+                          <input ng-model="settings.filters.useLatestWallpapers" type="checkbox"></input> Use Online <b>Latest</b> Wallpapers
                         </label>
                       </div>
                     </div>
@@ -285,21 +268,10 @@
                 </div>
               </div>
             </div>
-            
-            <!--end of test code -->
-            
-            <!--<p>Wallpapers will be downloaded at following location:</p>
-            <div class="well">
-              {{localFolderPath}}
-            </div>
-            <button class="btn btn-default" ng-click="showFolderDialog()" >Change Folder</button>
-            <hr>
-            <p><b>Note:</b></p>
-            <p>You can view your existing wallpaper collection within this application if you select the folder/directory path to your wallpaper collection folder. Try it, it should be fun :-)</p>-->
           </div>
           <div class="modal-footer">
-            <button type="button" ng-click="cancelFolderPathChange()" class="btn btn-default" data-dismiss="modal">Cancel</button>
-            <button type="button" ng-click="updateFolderPath()" class="btn btn-default" data-dismiss="modal">Save changes</button>
+            <button type="button" ng-click="cancelChanges()" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            <button type="button" ng-click="saveChanges()" class="btn btn-default" data-dismiss="modal">Save changes</button>
           </div>
         </div>
       </div>
@@ -464,7 +436,10 @@
           }
         };
         
+        // replacing following design-time initialization with the jQuery's live event ....
         $('.timepicker').timepicker();
+        
+        
       });
       
       function enableGallery() {
@@ -473,6 +448,10 @@
           clickBehaviour: 'next',
           detach_id: 'wrapper'
         });
+      }
+      
+      function callMe() {
+          alert('called from angular controller');
       }
     </script>
   </div>

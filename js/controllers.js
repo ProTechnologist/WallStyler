@@ -21,11 +21,13 @@ var appCtrl = WallStyler.controller('appCtrl', ['$scope', 'toastr', '$window', f
 	$scope.localWallpapers = [];
 	$scope.localFolderPath = '';
 	$scope.IsBusy = null;
+    $scope.settings = null;
 
 	/********** private functions **********/
 	function init() {
-		api.init(function (path) {
-			$scope.localFolderPath = path.toString();
+		api.init(function (settings) {
+			//$scope.localFolderPath = path.toString();
+            $scope.settings = settings;
 		});
 	}
 
@@ -107,16 +109,16 @@ var appCtrl = WallStyler.controller('appCtrl', ['$scope', 'toastr', '$window', f
 		});
 	}
 
-	$scope.updateFolderPath = function () {
-		api.updateWallpaperPath($scope.localFolderPath, function () {
+	$scope.saveChanges = function () {
+		api.saveChanges($scope.settings, function () {
 			$scope.showOfflineWallpapers();
 			toastr.success('Settings have been applied successfully.');
 		});
 	}
 
-	$scope.cancelFolderPathChange = function () {
-		api.getWallpaperPath(function (path) {
-			$scope.localFolderPath = path;
+	$scope.cancelChanges = function () {
+		api.getSettings(function (settings) {
+			$scope.settings = settings;
 			toastr.info('Changes in settings discarded succesfully.');
 		});
 	}
@@ -257,4 +259,26 @@ var appCtrl = WallStyler.controller('appCtrl', ['$scope', 'toastr', '$window', f
 			});
 		}
 	}
+    
+    $scope.addNewScheduleRule = function() {
+        if($scope.settings.scheduler.rules == null){
+            $scope.settings.scheduler.rules = [];
+        }
+        $scope.settings.scheduler.rules.push({
+            type: 'every',
+            pulse: 1,
+            pulseType: 'hours'
+        });
+        
+        // following function is a work-around to enable time-picker on the schedular.
+        // a better solution search is pending after the feature is completed.
+        setTimeout(function() {
+            $('.timepicker').timepicker();
+        }, 1);
+    }
+    
+    $scope.removeScheduleRule = function(rule) {
+        $scope.settings.scheduler.rules.splice($scope.settings.scheduler.rules.indexOf(rule), 1);
+    }
+    
 }]);
