@@ -9,6 +9,7 @@
     "configstore": "^1.2.1",
     "electron-packager": "^5.1.0",
     "fs-finder": "^1.8.1",
+    "later": "^1.2.0",
     "path-exists": "^2.0.0",
     "request": "^2.61.0",
     "status-bar": "^2.0.3",
