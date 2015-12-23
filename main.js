@@ -28,7 +28,7 @@ app.on('ready', function() {
   mainWindow.openDevTools();
 
   // and load the index.html of the app.
-  mainWindow.loadUrl('file://' + __dirname + '/index.html');
+  mainWindow.loadURL('file://' + __dirname + '/index.html');
   
   
   ipc.on('show-folder-dialog', function(event, args){

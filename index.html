@@ -57,6 +57,10 @@
               <a data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Downloaded Wallpaper Gallery" ng-click="showOfflineWallpapers()"
               href><span class="glyphicon glyphicon-th" style="font-size:16px"></span></a>
             </li>
+            <li>
+              <a data-toggle="tooltip" data-placement="bottom" title="" data-original-title="{{settings.scheduler.enableWallpaperChanger ? 'Automatic Wallpaper Changer is running. Stop Now?' : 'Automatic Wallpaper Changer is stopped. Start Now?'}}" ng-click="toggleAutomaticWallpaperChanger()"
+              href><span class="glyphicon" ng-class="(settings.scheduler.enableWallpaperChanger ? 'glyphicon-pause' : 'glyphicon-play')" style="font-size:16px"></span></a>
+            </li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
             <li><a href data-toggle="modal" data-target="#settingsModal">App Settings</a></li>
