@@ -222,7 +222,7 @@ var appCtrl = WallStyler.controller('appCtrl', ['$scope', 'toastr', '$window', f
 	$scope.showOfflineWallpapers = function () {
 		$scope.viewMode = 'offline';
 		$scope.localWallpapers = [];
-		api.getDownloadedWallpapers(function (files) {
+		api.getOfflineWallpapers(function (files) {
 			if (typeof files == 'string') { // adding single wallpaper found to scope's localWallpaper collection.
 				$scope.localWallpapers.push({
 					path: files

@@ -20,8 +20,9 @@ var store = new ConfigStore('wallhaven');
 // variable to control the automatic wallpaper changer.
 var timer = null;
 
-var thumbnailUrTemplate = "http://alpha.wallhaven.cc/wallpapers/thumb/small/th-{id}.{ext}";
-var wallpaperUrlTemplate = "http://alpha.wallhaven.cc/wallpaper/{id}";
+var baseUrl = 'http://alpha.wallhaven.cc/';
+var thumbnailUrTemplate = baseUrl + 'wallpapers/thumb/small/th-{id}.{ext}';
+var wallpaperUrlTemplate = baseUrl + 'wallpaper/{id}';
 
 // private function responsible for fetching IDs after parsing provided html.
 function fetchIDs(url, fetchIDsCompleted) {
@@ -68,7 +69,6 @@ function getWallpaperUrl(id, ext) {
 
 // Responsible for creating default config file and folder if file and/or folder doesn't already exists for wallpapers.
 function checkConfig(callback) {
-
     if (store.size == 0) {
       
         // creating default settings object.
@@ -111,8 +111,9 @@ function checkConfig(callback) {
 }
 
 // responsible for getting downloaded wallpapers (including first level folders/directories)
-function getDownloadedWallpapers(callback) {
-    var wp = store.get('wallpaperPath').toString();
+function getOfflineWallpapers(callback) {
+    //var settings = ;
+    var wp = store.get('settings').downloadPath; //store.get('wallpaperPath').toString();
     finder.in(wp).findFiles("*.<(jpg|jpeg|png|bmp|gif|tiff)>", function (foundFiles) {
         ToLocalURL(foundFiles, callback);
         // now search the files in all the folders.
@@ -174,7 +175,7 @@ function getSettings(callback) {
 
 // responsible for getting wallpaper's absolute path.
 function getLocalPath(wallpaper) {
-    var localPath = store.get('wallpaperPath') + '\\' + wallpaper.id + "." + wallpaper.ext;
+    var localPath = store.get('settings').downloadPath + '\\' + wallpaper.id + "." + wallpaper.ext;
     return localPath;
 }
 
@@ -187,7 +188,7 @@ function downloadWallpaper(wallpaper, downloadCompletedCallback) {
             var $c = cheerio.load(body);
             $c("img[id='wallpaper']").each(function (index, element) {
                 url = "http:" + $c(element).attr('src');
-                var localPath = store.get('wallpaperPath') + '\\' + path.basename(url).replace('wallhaven-', '');
+                var localPath = store.get('settings').downloadPath + '\\' + path.basename(url).replace('wallhaven-', '');
                 request(url).pipe(fs.createWriteStream(localPath)).on('close', function () {
                     downloadCompletedCallback(localPath);
                 });
@@ -299,50 +300,70 @@ function changeScheduledWallpaper() {
             
             // finding random filter among offline, random and latest wallpapers as assigning numerical values to each filter
             var list = [];
-            var targetFilterRank = 0;
+            var wallpaperSourceType = 0;
             if (filters.useOfflineWallpapers) list.push(1);
             if (filters.useRandomWallpapers) list.push(2);
             if (filters.useLatestWallpapers) list.push(3);
             
             // checking if list has only 1 item, if so, no need find random.
             if (list.length == 1) {
-                targetFilterRank = list[0];
+                wallpaperSourceType = list[0];
             }
             else { // since there are at least 2 options to select from, let's find the random number from the array.
-                // find random from the list ...
+                wallpaperSourceType = getRandom(list);
             }
 
-            if (targetFilterRank == 1) {
-                // apply random wallpapers from the locally available wallpapers (if exists)
+            if (wallpaperSourceType == 1) { // set random wallpaper from the collection of offline wallpapers
+                getOfflineWallpapers(function (wallpapers) {
+                    setWallpaper(getRandom(wallpapers), function () {
+                        // notify
+                    });
+                });
             }
-            if (targetFilterRank == 2) {
-                // apply random wallpaper
-                wallpaperId = getRandomWallpaperId(true);
+            if (wallpaperSourceType == 2) { // set random wallpaper from the collection of 'random' wallpapers
+                applyOnlineWallpaper('random', function(){
+                    // notify
+                });
             }
-            if (targetFilterRank == 3) {
-                // apply latest wallpaper
-                wallpaperId = getRandomWallpaperId(true);
+            if (wallpaperSourceType == 3) { // set random wallpaper from the collection of 'latest' wallpapers
+                applyOnlineWallpaper('latest', function(){
+                    // notify
+                });
             }
         }
     }
 }
 
-function getRandomWallpaperId(isRandom) {
+function getRandom(obj) {
+    // checking if object is array ... if so, return random objec from the array
+    if(typeof(obj) == 'number') {
+        var max = parseInt(obj), min = 1;
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+    if (typeof(obj) == 'object' && obj instanceof Array) {
+        return obj[Math.floor(Math.random() * obj.length)]    
+    }
+    
+    throw new Error('unknonw type');
+}
+
+function applyOnlineWallpaper(type, callback) {
     // logic:   get random number between 1 to 10 then access that page and fetch all wallpaper IDs, once obtained, get random wallpaper ID
     //          and return
     
-    // implementation pending ...
+    var url = baseUrl + type + '?page=' + getRandom(15);
+    fetchIDs(url, function(wallpapers){
+        downloadWallpaper(getRandom(wallpapers), function(path){
+            setWallpaper(path, callback);
+        });
+    });
     
-    return 0;
-}
-
-function downloadAndApplyOnlineWallpaper(wallpaperId) {
-
+    callback();
 }
 
 module.exports.load = load;
 module.exports.downloadWallpaper = downloadWallpaper;
-module.exports.getDownloadedWallpapers = getDownloadedWallpapers;
+module.exports.getOfflineWallpapers = getOfflineWallpapers;
 module.exports.init = checkConfig;
 module.exports.setWallpaper = validateAndSetWallpaper;
 module.exports.saveChanges = saveChanges;
