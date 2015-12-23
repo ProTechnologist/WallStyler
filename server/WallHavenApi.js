@@ -68,7 +68,7 @@ function getWallpaperUrl(id, ext) {
 }
 
 // Responsible for creating default config file and folder if file and/or folder doesn't already exists for wallpapers.
-function checkConfig(callback) {
+function initialize(callback) {
     if (store.size == 0) {
       
         // creating default settings object.
@@ -107,6 +107,7 @@ function checkConfig(callback) {
   
     //callback(ToDisplayPath(store.get('wallpaperPath').toString()));
     settings.downloadPath = ToDisplayPath(settings.downloadPath);
+    enableScheduler();
     callback(settings);
 }
 
@@ -364,7 +365,7 @@ function applyOnlineWallpaper(type, callback) {
 module.exports.load = load;
 module.exports.downloadWallpaper = downloadWallpaper;
 module.exports.getOfflineWallpapers = getOfflineWallpapers;
-module.exports.init = checkConfig;
+module.exports.init = initialize;
 module.exports.setWallpaper = validateAndSetWallpaper;
 module.exports.saveChanges = saveChanges;
 module.exports.getSettings = getSettings;
