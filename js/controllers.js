@@ -113,7 +113,7 @@ var appCtrl = WallStyler.controller('appCtrl', ['$scope', 'toastr', '$window', f
 
     $scope.saveChanges = function () {
         api.saveChanges($scope.settings, function () {
-            $scope.showOfflineWallpapers();
+            //$scope.showOfflineWallpapers();
             toastr.success('Settings have been applied successfully.');
         });
     }

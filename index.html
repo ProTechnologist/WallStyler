@@ -2,110 +2,111 @@
 <html ng-app="WallStyler" ng-cloak="">
 
 <head>
-  <title>WallStyler</title>
-  <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css"></link>
-  <link rel="stylesheet" type="text/css" href="css/bootstrap-slate.css"></link>
-  <link rel="stylesheet" type="text/css" href="css/app.css"></link>
-  <link rel="stylesheet" type="text/css" href="css/angular-toastr.min.css"></link>
-  <link rel="stylesheet" type="text/css" href="css/nga.min.css"></link>
-  <!--fullsizable stylesheets-->
-  <link rel="stylesheet" type="text/css" href="app_modules/fullsizable/css/jquery-fullsizable.css"></link>
-  <link rel="stylesheet" type="text/css" href="app_modules/fullsizable/css/jquery-fullsizable-theme.css"></link>
-  <link rel="stylesheet" type="text/css" href="app_modules/bootstrap-timepicker/css/bootstrap-timepicker.css"></link>
-  
-  <style>
-    .tab-content {
-      padding: 15px 15px 0 0;
-    }
-    .form-control {
-        background-color: #1c1e22;
-        border: 1px solid #0c0d0e;
-        color: white;
-    }
-  </style>
-  
+    <title>WallStyler</title>
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css"></link>
+    <link rel="stylesheet" type="text/css" href="css/bootstrap-slate.css"></link>
+    <link rel="stylesheet" type="text/css" href="css/app.css"></link>
+    <link rel="stylesheet" type="text/css" href="css/angular-toastr.min.css"></link>
+    <link rel="stylesheet" type="text/css" href="css/nga.min.css"></link>
+    <!--fullsizable stylesheets-->
+    <link rel="stylesheet" type="text/css" href="app_modules/fullsizable/css/jquery-fullsizable.css"></link>
+    <link rel="stylesheet" type="text/css" href="app_modules/fullsizable/css/jquery-fullsizable-theme.css"></link>
+    <link rel="stylesheet" type="text/css" href="app_modules/bootstrap-timepicker/css/bootstrap-timepicker.css"></link>
+
+    <style>
+        .tab-content {
+            padding: 15px 15px 0 0;
+        }
+        
+        .form-control {
+            background-color: #1c1e22;
+            border: 1px solid #0c0d0e;
+            color: white;
+        }
+    </style>
+
 </head>
 
 <body ng-controller="appCtrl" style="background-color:#1C1E22">
 
-  <div id="wrapper">
+    <div id="wrapper">
 
-    <!--top nav bar-->
-    <div class="navbar navbar-default navbar-fixed-top">
-      <div class="container-fluid">
-        <div class="navbar-header">
-          <a href class="navbar-brand">WallStyler</a>
-          <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#navbar-main" aria-expanded="false">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
+        <!--top nav bar-->
+        <div class="navbar navbar-default navbar-fixed-top">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a href class="navbar-brand">WallStyler</a>
+                    <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#navbar-main" aria-expanded="false">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div>
+                <div class="navbar-collapse collapse" id="navbar-main" aria-expanded="false" style="height: 1px;">
+                    <ul class="nav navbar-nav">
+                        <li>
+                            <a href="#" ng-click="latest()" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Latest Wallpapers"><span class="glyphicon glyphicon-time" style="font-size:16px"></span></a>
+                        </li>
+                        <li>
+                            <a href="#" ng-click="random()" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Random Wallpapers"><span class="glyphicon glyphicon-random" style="font-size:16px"></span></a>
+                        </li>
+                        <li>
+                            <a data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Online Wallpapers" ng-click="viewMode = 'online'"
+                            href="#"><span class="glyphicon glyphicon-search" style="font-size:16px"></span></a>
+                        </li>
+                        <li>
+                            <a data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Downloaded Wallpaper Gallery" ng-click="showOfflineWallpapers()"
+                            href><span class="glyphicon glyphicon-th" style="font-size:16px"></span></a>
+                        </li>
+                        <li>
+                            <a data-toggle="tooltip" data-placement="bottom" title="" data-original-title="{{settings.scheduler.enableWallpaperChanger ? 'Automatic Wallpaper Changer is running. Stop Now?' : 'Automatic Wallpaper Changer is stopped. Start Now?'}}"
+                            ng-click="toggleAutomaticWallpaperChanger()" href><span class="glyphicon" ng-class="(settings.scheduler.enableWallpaperChanger ? 'glyphicon-pause' : 'glyphicon-play')" style="font-size:16px"></span></a>
+                        </li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href data-toggle="modal" data-target="#settingsModal">App Settings</a></li>
+                        <li><a href data-toggle="modal" data-target="#aboutModal">About</a></li>
+                        <li><a href="https://github.com/ProTechnologist/WallStyler" target="_blank">Github</a></li>
+                    </ul>
+                </div>
+            </div>
         </div>
-        <div class="navbar-collapse collapse" id="navbar-main" aria-expanded="false" style="height: 1px;">
-          <ul class="nav navbar-nav">
-            <li>
-              <a href="#" ng-click="latest()" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Latest Wallpapers"><span class="glyphicon glyphicon-time" style="font-size:16px"></span></a>
-            </li>
-            <li>
-              <a href="#" ng-click="random()" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Random Wallpapers"><span class="glyphicon glyphicon-random" style="font-size:16px"></span></a>
-            </li>
-            <li>
-              <a data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Online Wallpapers" ng-click="viewMode = 'online'"
-              href="#"><span class="glyphicon glyphicon-search" style="font-size:16px"></span></a>
-            </li>
-            <li>
-              <a data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Downloaded Wallpaper Gallery" ng-click="showOfflineWallpapers()"
-              href><span class="glyphicon glyphicon-th" style="font-size:16px"></span></a>
-            </li>
-            <li>
-              <a data-toggle="tooltip" data-placement="bottom" title="" data-original-title="{{settings.scheduler.enableWallpaperChanger ? 'Automatic Wallpaper Changer is running. Stop Now?' : 'Automatic Wallpaper Changer is stopped. Start Now?'}}" ng-click="toggleAutomaticWallpaperChanger()"
-              href><span class="glyphicon" ng-class="(settings.scheduler.enableWallpaperChanger ? 'glyphicon-pause' : 'glyphicon-play')" style="font-size:16px"></span></a>
-            </li>
-          </ul>
-          <ul class="nav navbar-nav navbar-right">
-            <li><a href data-toggle="modal" data-target="#settingsModal">App Settings</a></li>
-            <li><a href data-toggle="modal" data-target="#aboutModal">About</a></li>
-            <li><a href="https://github.com/ProTechnologist/WallStyler" target="_blank">Github</a></li>
-          </ul>
-        </div>
-      </div>
-    </div>
 
-    <!--search nav bar-->
-    <div class="navbar navbar-default navbar-fixed-top nga-default nga-stagger nga-fade" style="top:45px;box-shadow: #1E2125 0px 6px 10px 0px;"
-    ng-show="viewMode == 'online'">
-    
-    <!--Source provider name -->
-     <div style="float:left">
-        <div class="navbar-form">
-          <div class="form-group">
-            <h4>WallHaven (Alpha)</h4>
-          </div>
-        </div>
-     </div>
-    
-      <!-- search nav bar (continued) -->
-      <div class="container text-center">
-        <div class="navbar-form">
-          <div class="form-group">
-            <div class="input-group">
-              <!--start of search button-->
-              <input ng-model="query" ng-enter="search()" type="text" class="form-control" placeholder="Search" style="background-color: #272B30;border: 1px solid #1E2023;color: white;">
-              <span class="input-group-btn">
+        <!--search nav bar-->
+        <div class="navbar navbar-default navbar-fixed-top nga-default nga-stagger nga-fade" style="top:45px;box-shadow: #1E2125 0px 6px 10px 0px;"
+        ng-show="viewMode == 'online'">
+
+            <!--Source provider name -->
+            <div style="float:left">
+                <div class="navbar-form">
+                    <div class="form-group">
+                        <h4>WallHaven (Alpha)</h4>
+                    </div>
+                </div>
+            </div>
+
+            <!-- search nav bar (continued) -->
+            <div class="container text-center">
+                <div class="navbar-form">
+                    <div class="form-group">
+                        <div class="input-group">
+                            <!--start of search button-->
+                            <input ng-model="query" ng-enter="search()" type="text" class="form-control" placeholder="Search" style="background-color: #272B30;border: 1px solid #1E2023;color: white;">
+                            <span class="input-group-btn">
               <button ng-click="search()" class="btn btn-default" type="button">
                   <span class="glyphicon glyphicon-search" style="font-size:16px">
               </button>
             </span>
-            </div>
-            <!--end of search button-->
-            <a href ng-click="updateSFW()" ng-class="{'active green' : IsSFW }" data-toggle="tooltip" data-placement="bottom" title=""
-            data-original-title="Safe For Work Wallpapers" class="btn btn-default">SFW</a>
-            <a href ng-click="updateSketchy()" ng-class="{'active orange' : IsSketchy }" data-toggle="tooltip" data-placement="bottom"
-            title="" data-original-title="Sketchy Wallpapers" class="btn btn-default">Sketchy</a>
-            <a href ng-click="updateMRW()" ng-class="{'active blue' : IsMRW }" data-toggle="tooltip" data-placement="bottom" title=""
-            data-original-title="My Resolution Wallpapers" class="btn btn-default">MRW</a>
-            <a href="#" ng-click="refresh()" class="btn btn-default">
-              <span class="glyphicon glyphicon-refresh" style="font-size:16px">
+                        </div>
+                        <!--end of search button-->
+                        <a href ng-click="updateSFW()" ng-class="{'active green' : IsSFW }" data-toggle="tooltip" data-placement="bottom" title=""
+                        data-original-title="Safe For Work Wallpapers" class="btn btn-default">SFW</a>
+                        <a href ng-click="updateSketchy()" ng-class="{'active orange' : IsSketchy }" data-toggle="tooltip" data-placement="bottom"
+                        title="" data-original-title="Sketchy Wallpapers" class="btn btn-default">Sketchy</a>
+                        <a href ng-click="updateMRW()" ng-class="{'active blue' : IsMRW }" data-toggle="tooltip" data-placement="bottom" title=""
+                        data-original-title="My Resolution Wallpapers" class="btn btn-default">MRW</a>
+                        <a href="#" ng-click="refresh()" class="btn btn-default">
+                            <span class="glyphicon glyphicon-refresh" style="font-size:16px">
           </a>
         </div>
       </div>
@@ -128,7 +129,7 @@
     
     <!-- settings modal dialog -->
     <div class="modal fade" id="settingsModal">
-      <div class="modal-dialog" style="width: 900px">
+      <div class="modal-dialog" style="width: 800px">
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal"> X </button>
@@ -153,12 +154,12 @@
               </div>
               <div class="tab-pane fade" id="Scheduler">
                 <div class="row">
-                  <div class="col-md-12">
+                  <div class="col-xs-12">
                     <!--first control-->
                     <div class="form-horizontal">
                       <div class="form-group">
-                        <label class="control-label col-md-3" form="ctrl"></label>
-                        <div class="col-md-5">
+                        <label class="control-label col-xs-3" form="ctrl"></label>
+                        <div class="col-xs-5">
                           <div class="checkbox">
                             <label>
                               <input ng-model="settings.scheduler.enableWallpaperChanger" type="checkbox"></input> Enable Auto Wallpaper changer
@@ -167,76 +168,77 @@
                         </div>
                       </div>
                     </div>
-                    
+                    <div ng-show="settings.scheduler.enableWallpaperChanger">
                     <!--middle control-->
                     <div class="form-horizontal">
                       <div class="form-group">
-                        <label class="control-label col-md-3" form="ctrl"></label>
-                        <div class="col-md-5">
+                        <label class="control-label col-xs-3" form="ctrl"></label>
+                        <div class="col-xs-5">
                           <div class="checkbox">
                             <label>
-                              <input ng-model="settings.scheduler.changeOnStartup" type="checkbox"></input> Change wallpaper on WallStyler Startup.
+                              <input ng-model="settings.scheduler.changeOnStartup" type="checkbox"></input> Change wallpaper on Startup.
                             </label>
                           </div>
                         </div>
-                        <div class="col-md-4">
-                          <a href="#" class="btn btn-default" ng-click="addNewScheduleRule()" style="margin-left:9px;">Add New Time Schedule Rule</a>
+                        <div class="col-xs-4">
+                          <a href="#" class="btn btn-default" ng-click="addNewScheduleRule()" style="margin-left:-7px;">Add New Time Schedule Rule</a>
                         </div>
                       </div>
                     </div>
                     
-                    <!--Schedule rule filter -->
                     <div class="form-horizontal" ng-repeat="rule in settings.scheduler.rules">
-                        
                       <div class="form-group">
-                        <label class="control-label col-md-3" form="ctrl">Schedule Rule</label>
-                        <div class="col-md-3">
+                        <label class="control-label col-xs-3" form="ctrl">Schedule Rule</label>
+                        <div class="col-xs-3">
                           <select class="form-control" ng-model="rule.type">
                             <option value="every">Every</option>
                             <option value="at">At</option>
                           </select>
                         </div>
-                        <div class="col-md-2" ng-show="rule.type == 'every'">
+                        <div class="col-xs-2" ng-show="rule.type == 'every'">
                           <input type="number" class="form-control" ng-model="rule.pulse" />
                         </div>
-                        <div class="col-md-2 bootstrap-timepicker timepicker" ng-show="rule.type == 'at'">
+                        <div class="col-xs-2 bootstrap-timepicker timepicker" ng-show="rule.type == 'at'">
                             <input type="text" class="form-control timepicker" ng-model="rule.time">
                         </div>
-                        <div class="col-md-2" ng-show="rule.type == 'every'">
+                        <div class="col-xs-2" ng-show="rule.type == 'every'">
                           <select class="form-control" ng-model="rule.pulseType">
-                            <option value="seconds">Second(s)</option>
+                            <!--<option value="seconds">Second(s)</option>-->
                             <option value="minutes">Minute(s)</option>
                             <option value="hours">hour(s)</option>
                             <option value="days">day(s)</option>
                           </select>
                         </div>
-                        <div class="col-md-2" ng-show="rule.type == 'at'">
+                        <div class="col-xs-2" ng-show="rule.type == 'at'">
                           <p class="control-label" style="text-align: center">Everyday </p>
                         </div>
-                        <div class="col-md-2">
+                        <div class="col-xs-2">
                           <a href="#" class="btn btn-default" ng-click="removeScheduleRule(rule)">Remove </a>
                         </div>
                       </div>
                     </div>
+                    </div>
                   </div>
                 </div>
               </div>
+              
               <div class="tab-pane fade" id="Others">
                   
                 <!--info control-->
                 <div class="form-horizontal">
                   <h3>Information:</h3>
-                  <p>Here, you can specify the filters used to fetch the wallpapers which will be applied using automatic wallpaper changer. Following options works only when you wish to download new wallpapers automatically and then use them as desktop wallpapers seemlessly.</p>
+                  <p>Here, you can specify the filters used to fetch the wallpapers which will be applied by automatic wallpaper changer. When all filters are unchecked, then automatic wallpaper changer will do nothing. If multiple filters are checked, one option will be picked randomly and change the wallpaper according to the defined schedule.</p>
+                  <p>When online wallpaper filters are used, wallpapers will be downloaded first and then applied.</p>
                 </div>
                 
                 <!--first control-->
                 <div class="form-horizontal">
                   <div class="form-group">
-                    <label class="control-label col-md-4" form="ctrl">Automatic Wallpaper Changer Filters</label>
-                    <div class="col-md-8">
+                    <label class="control-label col-xs-4" form="ctrl">Auto. Wallpaper Changer Filters</label>
+                    <div class="col-xs-8">
                       <div class="checkbox">
                         <label>
-                          <input ng-model="settings.filters.useOfflineWallpapers" type="checkbox"></input> Use wallpapers which are already available in <b>Download Folder</b>.
+                          <input ng-model="settings.filters.useOfflineWallpapers" type="checkbox"></input> Include Offline wallpapers (available in <b>Download Folder</b>).
                         </label>
                       </div>
                     </div>
@@ -246,11 +248,11 @@
                 <!--second control-->
                 <div class="form-horizontal">
                   <div class="form-group">
-                    <label class="control-label col-md-4" form="ctrl"></label>
-                    <div class="col-md-8">
+                    <label class="control-label col-xs-4" form="ctrl"></label>
+                    <div class="col-xs-8">
                       <div class="checkbox">
                         <label>
-                          <input ng-model="settings.filters.useRandomWallpapers" type="checkbox"></input> Use Online <b>Random</b> Wallpapers
+                          <input ng-model="settings.filters.useRandomWallpapers" type="checkbox"></input> Include Online <b>Random</b> Wallpapers
                         </label>
                       </div>
                     </div>
@@ -260,11 +262,11 @@
                 <!-- third control-->
                 <div class="form-horizontal">
                   <div class="form-group">
-                    <label class="control-label col-md-4" form="ctrl"></label>
-                    <div class="col-md-8">
+                    <label class="control-label col-xs-4" form="ctrl"></label>
+                    <div class="col-xs-8">
                       <div class="checkbox">
                         <label>
-                          <input ng-model="settings.filters.useLatestWallpapers" type="checkbox"></input> Use Online <b>Latest</b> Wallpapers
+                          <input ng-model="settings.filters.useLatestWallpapers" type="checkbox"></input> Include Online <b>Latest</b> Wallpapers
                         </label>
                       </div>
                     </div>
@@ -334,47 +336,47 @@
             >
           </a>
           <span>{{wallpaper.res}}</span>
-          </div>
-          <img class="wallpaper-image" ng-src="{{wallpaper.thumbnailUrl}}" alt="loading" ng-dblclick="downloadWallpaper(wallpaper)">
-          <div class="progress progress-striped active download-style" ng-show="wallpaper.status == 'downloading'">
-            <div class="progress-bar progress-bar-warning" style="width: 100%">Downloading ...</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- offline wallpaper listing -->
-      <div class="wallpapers offline-gallery" ng-show="viewMode == 'offline'">
-        <div class="wallpaper" ng-repeat="wallpaper in localWallpapers">
-          <div class="actions">
-            <a href ng-click="setWallpaper(wallpaper)" ng-show="wallpaper.status != 'downloading'" class="set-as-wallpaper" data-toggle="tooltip"
-            data-placement="bottom" title="" data-original-title="Set as wallpaper">
-            </a>
-            <a href ng-click="deleteWallpaper(wallpaper)" class="delete" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Download Wallpaper">
-            </a>
-          </div>
-          <a ng-href="{{wallpaper.path}}" class="wallpaper-image-a">
-            <img style="width:300px; height:200px" class="wallpaper-image" ng-src="{{wallpaper.path}}" alt="loading">
-          </a>
-        </div>
-      </div>
-
-      <!--Wallpaper loading progress bar-->
-      <div class="container-fluid" ng-show="status == 'Busy'">
-        <div class="row">
-          <div class="col-md-offset-3 col-md-6">
-            <div class="loading">
-              <div class="progress progress-striped active" style="margin-bottom:0;">
-                <div class="progress-bar progress-bar-warning" style="width: 100%">Loading More Wallpapers ...</div>
-              </div>
+                    </div>
+                    <img class="wallpaper-image" ng-src="{{wallpaper.thumbnailUrl}}" alt="loading" ng-dblclick="downloadWallpaper(wallpaper)">
+                    <div class="progress progress-striped active download-style" ng-show="wallpaper.status == 'downloading'">
+                        <div class="progress-bar progress-bar-warning" style="width: 100%">Downloading ...</div>
+                    </div>
+                </div>
             </div>
-          </div>
-        </div>
-      </div>
-    </div>
 
-    <!-- TODO: Add application status details in the footer and fix absolute positioning issue with electron. -->
-    <!--footer-->
-    <!--<div class="footer">
+            <!-- offline wallpaper listing -->
+            <div class="wallpapers offline-gallery" ng-show="viewMode == 'offline'">
+                <div class="wallpaper" ng-repeat="wallpaper in localWallpapers">
+                    <div class="actions">
+                        <a href ng-click="setWallpaper(wallpaper)" ng-show="wallpaper.status != 'downloading'" class="set-as-wallpaper" data-toggle="tooltip"
+                        data-placement="bottom" title="" data-original-title="Set as wallpaper">
+                        </a>
+                        <a href ng-click="deleteWallpaper(wallpaper)" class="delete" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Download Wallpaper">
+                        </a>
+                    </div>
+                    <a ng-href="{{wallpaper.path}}" class="wallpaper-image-a">
+                        <img style="width:300px; height:200px" class="wallpaper-image" ng-src="{{wallpaper.path}}" alt="loading">
+                    </a>
+                </div>
+            </div>
+
+            <!--Wallpaper loading progress bar-->
+            <div class="container-fluid" ng-show="status == 'Busy'">
+                <div class="row">
+                    <div class="col-md-offset-3 col-md-6">
+                        <div class="loading">
+                            <div class="progress progress-striped active" style="margin-bottom:0;">
+                                <div class="progress-bar progress-bar-warning" style="width: 100%">Loading More Wallpapers ...</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TODO: Add application status details in the footer and fix absolute positioning issue with electron. -->
+        <!--footer-->
+        <!--<div class="footer">
     <div class="status-box">
       Status: {{IsBusy}}
     </div>
@@ -391,42 +393,42 @@
     <div class="status-box pull-right" style="width:1px; min-width:1px;"></div>
   </div>-->
 
-    <!--scripts-->
-    <script>
-      window.$ = window.jQuery = require('./scripts/jquery-1.10.2.min.js');
-    </script>
-    <script>
-      require('./scripts/bootstrap.min.js');
-    </script>
-    <script>
-      require('./node_modules/angular/angular.min.js');
-    </script>
-    <script>
-      require('./node_modules/angular-animate/angular-animate.min.js');
-    </script>
-    <script>
-      require('./scripts/ng-infinite-scroll.min.js');
-    </script>
-    <script>
-      require('./scripts/angular-toastr.min.js');
-    </script>
-    <script>
-      require('./scripts/angular-toastr.tpls.min.js');
-    </script>
-    <!--fullsizable scripts-->
-    <script>
-      require('./app_modules/fullsizable/js/jquery.touchSwipe.min.js');
-    </script>
-    <script>
-      require('./app_modules/fullsizable/js/jquery-fullsizable.min.js');
-    </script>
+        <!--scripts-->
+        <script>
+            window.$ = window.jQuery = require('./scripts/jquery-1.10.2.min.js');
+        </script>
+        <script>
+            require('./scripts/bootstrap.min.js');
+        </script>
+        <script>
+            require('./node_modules/angular/angular.min.js');
+        </script>
+        <script>
+            require('./node_modules/angular-animate/angular-animate.min.js');
+        </script>
+        <script>
+            require('./scripts/ng-infinite-scroll.min.js');
+        </script>
+        <script>
+            require('./scripts/angular-toastr.min.js');
+        </script>
+        <script>
+            require('./scripts/angular-toastr.tpls.min.js');
+        </script>
+        <!--fullsizable scripts-->
+        <script>
+            require('./app_modules/fullsizable/js/jquery.touchSwipe.min.js');
+        </script>
+        <script>
+            require('./app_modules/fullsizable/js/jquery-fullsizable.min.js');
+        </script>
 
-    <script src="js/app.js"></script>
-    <script src="js/controllers.js"></script>
-    <script src="./app_modules/bootstrap-timepicker/js/bootstrap-timepicker.js"></script>
+        <script src="js/app.js"></script>
+        <script src="js/controllers.js"></script>
+        <script src="./app_modules/bootstrap-timepicker/js/bootstrap-timepicker.js"></script>
 
-    <script>
-      $(function() {
+        <script>
+            $(function() {
         
         // showing about modal dialog
         //$("#aboutModal").modal('show');
@@ -457,8 +459,8 @@
       function callMe() {
           alert('called from angular controller');
       }
-    </script>
-  </div>
+        </script>
+    </div>
 </body>
 
 </html>

@@ -306,6 +306,11 @@ function changeScheduledWallpaper() {
             if (filters.useRandomWallpapers) list.push(2);
             if (filters.useLatestWallpapers) list.push(3);
             
+            // checking if list is empty, return ...
+            if(list.length == 0) {
+                return;
+            }
+            
             // checking if list has only 1 item, if so, no need find random.
             if (list.length == 1) {
                 wallpaperSourceType = list[0];
