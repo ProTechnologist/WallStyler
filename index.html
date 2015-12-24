@@ -203,6 +203,7 @@
                         </div>
                         <div class="col-xs-2" ng-show="rule.type == 'every'">
                           <select class="form-control" ng-model="rule.pulseType">
+                              <!--'seconds options is fully tested but I think, it shouldn't be available'-->
                             <!--<option value="seconds">Second(s)</option>-->
                             <option value="minutes">Minute(s)</option>
                             <option value="hours">hour(s)</option>
@@ -309,6 +310,17 @@
           </div>
         </div>
       </div>
+    </div>
+    
+    <!-- online wallpaper listing -->
+    <div class="welcome" ng-show="welcomeMsg">
+        <h2>Hi, Welcome to WallStyler!</h2>
+        <h3>An Open Source & Cross Platform App that delivers wallpapers seemlessly to your desktop.</h3>
+        <br />
+        <h4>View Latest and Random Wallpapers from WallBase, search them, download them setup a schedule to automatically fetch latest wallpapers and apply them as desktop. Automatically.</h4>
+        <br />
+        <h2>Try it, it should be fun! :-)</h2>
+        
     </div>
     
     <!-- online wallpaper listing -->

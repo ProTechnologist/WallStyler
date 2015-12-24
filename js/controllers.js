@@ -13,6 +13,7 @@ var appCtrl = WallStyler.controller('appCtrl', ['$scope', 'toastr', '$window', f
     // public variables
     $scope.query = '';
     $scope.viewMode = 'online';
+    $scope.welcomeMsg = true;
     $scope.IsSFW = true;
     $scope.IsSketchy = false;
     $scope.IsMRW = false;
@@ -113,7 +114,7 @@ var appCtrl = WallStyler.controller('appCtrl', ['$scope', 'toastr', '$window', f
 
     $scope.saveChanges = function () {
         api.saveChanges($scope.settings, function () {
-            //$scope.showOfflineWallpapers();
+            $scope.showOfflineWallpapers();
             toastr.success('Settings have been applied successfully.');
         });
     }
@@ -184,6 +185,9 @@ var appCtrl = WallStyler.controller('appCtrl', ['$scope', 'toastr', '$window', f
 
     // responsible for fetching/loading wallpapers from the source (i.e. wallhaven).
     $scope.load = function (url) {
+        
+        $scope.welcomeMsg = false;
+        
         $scope.status = 'Busy';
         api.load(url, function (list) {
             render(list);
@@ -220,6 +224,9 @@ var appCtrl = WallStyler.controller('appCtrl', ['$scope', 'toastr', '$window', f
 
     // responsible for fetching user wallpapers from the file system.
     $scope.showOfflineWallpapers = function () {
+        
+        $scope.welcomeMsg = false;
+        
         $scope.viewMode = 'offline';
         $scope.localWallpapers = [];
         api.getOfflineWallpapers(function (files) {

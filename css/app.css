@@ -126,3 +126,8 @@
       font-size: 0.85em;
       min-width: 150px;
     }
+    
+    .welcome {
+      text-align: center;
+      margin: 150px auto;
+    }
