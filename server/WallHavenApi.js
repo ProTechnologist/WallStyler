@@ -75,7 +75,7 @@ function initialize(callback) {
         var settings = new Object();
     
         //download path settings // shown in the first tab
-        settings.downloadPath = './/wallpapers';
+        settings.downloadPath = null;
     
         //Automatic wallpaper changer scheduler settings
         settings.scheduler = new Object();
@@ -98,15 +98,17 @@ function initialize(callback) {
         settings = store.get('settings');
     }
 
-    pathExists(settings.downloadPath).then(function (exists) {
-        if (!exists) {
-            // wallpaper folder does not exists, lets create one,
-            fs.mkdirSync(settings.downloadPath);
-        }
-    });
-  
-    //callback(ToDisplayPath(store.get('wallpaperPath').toString()));
-    settings.downloadPath = ToDisplayPath(settings.downloadPath);
+    if (settings.downloadPath != null) {
+        pathExists(settings.downloadPath).then(function (exists) {
+            if (!exists) {
+                // wallpaper folder does not exists, lets create one,
+                fs.mkdirSync(settings.downloadPath);
+            }
+        });
+
+        settings.downloadPath = ToDisplayPath(settings.downloadPath);
+    }
+
     enableScheduler();
     callback(settings);
 }
@@ -307,7 +309,7 @@ function changeScheduledWallpaper() {
             if (filters.useLatestWallpapers) list.push(3);
             
             // checking if list is empty, return ...
-            if(list.length == 0) {
+            if (list.length == 0) {
                 return;
             }
             
@@ -327,12 +329,12 @@ function changeScheduledWallpaper() {
                 });
             }
             if (wallpaperSourceType == 2) { // set random wallpaper from the collection of 'random' wallpapers
-                applyOnlineWallpaper('random', function(){
+                applyOnlineWallpaper('random', function () {
                     // notify
                 });
             }
             if (wallpaperSourceType == 3) { // set random wallpaper from the collection of 'latest' wallpapers
-                applyOnlineWallpaper('latest', function(){
+                applyOnlineWallpaper('latest', function () {
                     // notify
                 });
             }
@@ -342,14 +344,14 @@ function changeScheduledWallpaper() {
 
 function getRandom(obj) {
     // checking if object is array ... if so, return random objec from the array
-    if(typeof(obj) == 'number') {
+    if (typeof (obj) == 'number') {
         var max = parseInt(obj), min = 1;
         return Math.floor(Math.random() * (max - min + 1)) + min;
     }
-    if (typeof(obj) == 'object' && obj instanceof Array) {
-        return obj[Math.floor(Math.random() * obj.length)]    
+    if (typeof (obj) == 'object' && obj instanceof Array) {
+        return obj[Math.floor(Math.random() * obj.length)]
     }
-    
+
     throw new Error('unknonw type');
 }
 
@@ -358,12 +360,12 @@ function applyOnlineWallpaper(type, callback) {
     //          and return
     
     var url = baseUrl + type + '?page=' + getRandom(15);
-    fetchIDs(url, function(wallpapers){
-        downloadWallpaper(getRandom(wallpapers), function(path){
+    fetchIDs(url, function (wallpapers) {
+        downloadWallpaper(getRandom(wallpapers), function (path) {
             setWallpaper(path, callback);
         });
     });
-    
+
     callback();
 }
 

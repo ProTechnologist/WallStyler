@@ -63,6 +63,7 @@
                             ng-click="toggleAutomaticWallpaperChanger()" href><span class="glyphicon" ng-class="(settings.scheduler.enableWallpaperChanger ? 'glyphicon-pause' : 'glyphicon-play')" style="font-size:16px"></span></a>
                         </li>
                     </ul>
+                    
                     <ul class="nav navbar-nav navbar-right">
                         <li><a href data-toggle="modal" data-target="#settingsModal">App Settings</a></li>
                         <li><a href data-toggle="modal" data-target="#aboutModal">About</a></li>
@@ -145,7 +146,7 @@
               <div class="tab-pane fade in active" id="DownloadPath">
                 <p>Wallpapers will be downloaded at following location:</p>
             <div class="well">
-              {{settings.downloadPath}}
+              {{ settings.downloadPath == null ? 'Not Available!' : settings.downloadPath }}
             </div>
             <button class="btn btn-default" ng-click="showFolderDialog()" >Change Folder</button>
             <hr>
@@ -313,11 +314,14 @@
     </div>
     
     <!-- online wallpaper listing -->
-    <div class="welcome" ng-show="welcomeMsg">
+    <div class="generalMessage" ng-show="welcomeMsg">
         <h2>Hi, Welcome to WallStyler!</h2>
-        <h3>An Open Source & Cross Platform App that delivers wallpapers seemlessly to your desktop.</h3>
+        <h3>An Open Source & Cross Platform App that delivers wallpapers to your desktop.</h3>
         <br />
-        <h4>View Latest and Random Wallpapers from WallBase, search them, download them setup a schedule to automatically fetch latest wallpapers and apply them as desktop. Automatically.</h4>
+        <h4>View Latest and Random Wallpapers from WallHaven, search them, download them or setup a schedule to fetch latest wallpapers and apply them as desktop. All Automatically.</h4>
+        <br />
+        <h4>Hover over any wallpaper in order to access options to download online wallpapers.</h4>
+        <h4>Multiple wallpapers can be downloaded simultaneously.</h4>
         <br />
         <h2>Try it, it should be fun! :-)</h2>
         
@@ -371,7 +375,17 @@
                     </a>
                 </div>
             </div>
-
+            
+            <div class="generalMessage" ng-show="viewMode == 'offline' && localWallpapers.length == 0">
+                <h2>No wallpapers found.</h2>
+                <h3>Try Latest, Random wallpapers and/or search wallpapers by any keyword by top-left toolbar buttons.</h3>
+                <br />
+                <h4>Hover over any wallpaper in order to access options to download wallpapers or download-and-set-as-wallpapers in a single click.</h4>
+                <h4>Multiple wallpapers can be downloaded simultaneously.</h4>
+                <br /><br />
+                <h4>When viewing downloaded wallpapers, clicking on wallpaper will launch wallpaper gallery in full-screen mode.</h4>
+            </div>
+            
             <!--Wallpaper loading progress bar-->
             <div class="container-fluid" ng-show="status == 'Busy'">
                 <div class="row">

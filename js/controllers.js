@@ -1,7 +1,7 @@
 /* global WallStyler */
 var api = require('./server/WallHavenApi')
-//var remote = require('remote');
-var ipc = require('ipc');
+//var ipc = require('ipc');
+var ipc = require("electron").ipcRenderer;
 
 var appCtrl = WallStyler.controller('appCtrl', ['$scope', 'toastr', '$window', function ($scope, toastr, $window) {
 
@@ -104,9 +104,10 @@ var appCtrl = WallStyler.controller('appCtrl', ['$scope', 'toastr', '$window', f
 
     $scope.showFolderDialog = function () {
         ipc.send('show-folder-dialog');
-        ipc.on('folder-selected', function (path) {
-            if (path != null) {
-                $scope.localFolderPath = path.toString();
+        ipc.on('folder-selected', function (event, argument) {
+            if (argument != null) {
+                var path = argument.toString();
+                $scope.settings.downloadPath = path;
                 $scope.$apply();
             }
         });
@@ -209,6 +210,12 @@ var appCtrl = WallStyler.controller('appCtrl', ['$scope', 'toastr', '$window', f
 
     // responsible for downloading wallpaper from the source.
     $scope.downloadWallpaper = function (wallpaper, callback) {
+        
+        if($scope.settings.downloadPath == null) {
+            toastr.warning('Download folder is not selected. Please select download folder first.');
+            return;    
+        }
+        
         // updating wallpaper status to downloading so that UI will be updated accordingly.
         wallpaper.status = 'downloading';
         // sending call to API to begin downloading wallpaper.

@@ -127,7 +127,8 @@
       min-width: 150px;
     }
     
-    .welcome {
+    .generalMessage {
       text-align: center;
       margin: 150px auto;
+      margin-bottom: 0;
     }

@@ -1,6 +1,7 @@
 var app = require('app');  // Module to control application life.
 var BrowserWindow = require('browser-window');  // Module to create native browser window.
-var ipc = require('ipc');
+//var ipc = require('ipc');
+var ipc = require("electron").ipcMain;
 
 // Report crashes to our server.
 require('crash-reporter').start();
@@ -22,7 +23,7 @@ app.on('window-all-closed', function() {
 // initialization and is ready to create browser windows.
 app.on('ready', function() {
   // Create the browser window.
-  mainWindow = new BrowserWindow({width: 800, height: 625, 'min-width': 800, 'min-height':400 });
+  mainWindow = new BrowserWindow({width: 1000, height: 650, 'min-width': 800, 'min-height':400 });
   
   mainWindow.setMenu(null);
   //mainWindow.openDevTools();
@@ -30,10 +31,8 @@ app.on('ready', function() {
   // and load the index.html of the app.
   mainWindow.loadURL('file://' + __dirname + '/index.html');
   
-  
   ipc.on('show-folder-dialog', function(event, args){
     var wallpaperPath = require('dialog').showOpenDialog({ properties: [ 'openDirectory' ]});
-    console.log(wallpaperPath);
     event.sender.send('folder-selected', wallpaperPath);
   });
   
