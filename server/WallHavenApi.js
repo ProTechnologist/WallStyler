@@ -446,8 +446,6 @@ function applyKeywordWallpaper(callback) {
     else {
         keyword = getRandom(list).trim();
     }
-
-    console.log('random keyword: ' + keyword);
     
     // applying wallpaper.
     var url = baseUrl + "search?q=" + keyword;
@@ -456,35 +454,21 @@ function applyKeywordWallpaper(callback) {
     if (settings.filters.MRW && settings.resolution.width != 0 && settings.resolution.height != 0) {
         url += '&resolutions=' + settings.resolution.width + 'x' + settings.resolution.height;
     }
-
-    console.log('final url: ' + url);
+    
     getMaxPageNumber(url, function (maxPageNumber) {
-        
         // since now max page number is now available, re-compute the URL to get random wallpaper from the random page ...
-
-        console.log('max page number: ' + maxPageNumber);
-        // computing URL ..
         var randomPageNumber = getRandom(maxPageNumber);
-
-        console.log('random page number: ' + randomPageNumber);
-
         url = baseUrl + "search?q=" + keyword + "&page=" + randomPageNumber;
-
         if (settings.filters.MRW && settings.resolution.width != 0 && settings.resolution.height != 0) {
             url += '&resolutions=' + settings.resolution.width + 'x' + settings.resolution.height;
         }
-
-        console.log('url: ' + url);
-
         fetchIDs(url, function (list) {
             downloadWallpaper(getRandom(list), function (path) {
-                //setWallpaper(path, callback);
-                console.log('download complete ...');
+                setWallpaper(path, callback);
             });
         });
     });
 }
-
 
 module.exports.load = load;
 module.exports.downloadWallpaper = downloadWallpaper;
