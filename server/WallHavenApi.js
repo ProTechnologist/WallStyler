@@ -55,7 +55,6 @@ function fetchIDs(url, fetchIDsCompleted) {
 }
 
 function getMaxPageNumber(url, callback) {
-    var maxPageNumber = 0;
     try {
         request(url, function (error, response, body) {
             if (!error && response.statusCode == 200) {
@@ -68,11 +67,9 @@ function getMaxPageNumber(url, callback) {
                     callback(parseInt(maxPageNumber));
                 }
                 else {
-                    maxPageNumber = 1;
+                    callback(1);
                 }
             }
-
-            callback(parseInt(maxPageNumber));
         });
     }
     catch (ex) {
@@ -221,6 +218,11 @@ function getLocalPath(wallpaper) {
 
 // responsible for downloading wallpaper to defined folder/directory.
 function downloadWallpaper(wallpaper, downloadCompletedCallback) {
+    
+    if(wallpaper == undefined || wallpaper == null) {
+        downloadCompletedCallback(null);
+    }
+    
     //var localpath = getLocalPath(wallpaper);
     var url = wallpaperUrlTemplate.replace('{id}', wallpaper.id);
     request(url, function (error, response, body) {
@@ -269,15 +271,27 @@ function validateAndSetWallpaper(wallpaper, callback) {
 }
 
 // responsible for updating system's wallpaper.
-function setWallpaper(path, callback) {
-    wallpaperMgr.set(path, function (err) {
-        if (err) {
-            callback(false);
-        }
-        else {
-            callback(true);
-        }
+function setWallpaper(wallpaperPath, callback) {
+    
+    if(wallpaperPath == undefined || wallpaperPath == null || wallpaperPath == '') {
+        callback(false);
+    }
+    
+    // wallpaperMgr.set(path, function (err) {
+    //     if (err) {
+    //         callback(false);
+    //     }
+    //     else {
+    //         callback(true);
+    //     }
+    // });
+    
+    // wallpaper api is no longer returning err even if file not found..
+    wallpaperMgr.set(wallpaperPath, function() {
+        // so returning true - always.
+        callback(true);
     });
+    
 }
 
 // responsible for deleting wallpaper from the file system.
@@ -323,6 +337,7 @@ function disableSchedular() {
  
 // responsible for enabling timer for the automatic wallpaper changer 
 function enableScheduler() {
+
     var settings = store.get('settings');
     if (settings.scheduler.scheduleTextExpression.length != 0) {
         var scheduler = later.parse.text(settings.scheduler.scheduleTextExpression);
@@ -346,7 +361,7 @@ function changeScheduledWallpaper() {
     if (settings != null && settings.downloadPath != null && settings.scheduler.enableWallpaperChanger) {
 
         var filters = settings.filters;
-        if (filters.includeOfflineWallpapers || filters.useRandomWallpapers || filters.useLatestWallpapers || filters.includeKeywords) {
+        if (filters.includeOfflineWallpapers || filters.includeRandomWallpapers || filters.includeLatestWallpapers || filters.includeKeywords) {
             
             // finding random filter among offline, random and latest wallpapers as assigning numerical values to each filter
             var list = [];
@@ -371,24 +386,24 @@ function changeScheduledWallpaper() {
 
             if (wallpaperSourceType == 1) { // set random wallpaper from the collection of offline wallpapers
                 getOfflineWallpapers(function (wallpapers) {
-                    setWallpaper(getRandom(wallpapers), function () {
+                    setWallpaper(getRandom(wallpapers), function (result) {
                         // notify
                     });
                 });
             }
             if (wallpaperSourceType == 2) { // set random wallpaper from the collection of 'random' wallpapers
-                applyOnlineWallpaper('random', function () {
+                applyOnlineWallpaper('random', function (result) {
                     // notify
                 });
             }
             if (wallpaperSourceType == 3) { // set random wallpaper from the collection of 'latest' wallpapers
-                applyOnlineWallpaper('latest', function () {
+                applyOnlineWallpaper('latest', function (result) {
                     // notify
                 });
             }
 
-            if (wallpaperSourceType == 4) { // set random wallpaper from the collection of 'latest' wallpapers
-                applyKeywordWallpaper(settings.filters.keywords, function () {
+            if (wallpaperSourceType == 4) { // set random wallpaper from the collection of 'keyword search results' wallpapers
+                applyKeywordWallpaper(function (result) {
                     // notify
                 });
             }
@@ -423,13 +438,13 @@ function applyOnlineWallpaper(type, callback) {
     callback();
 }
 
-function applyKeywordWallpaper(callback) {
+function applyKeywordWallpaper(processCompletedCallback) {
 
     var settings = store.get('settings');
     var array = settings.filters.keywords;
 
     if (array == null) {
-        callback(null);
+        processCompletedCallback(false);
     }
 
     var keyword = null,
@@ -438,7 +453,7 @@ function applyKeywordWallpaper(callback) {
     list = array.split(',');
 
     if (list.length == 0) {
-        callback(null);
+        processCompletedCallback(false);
     }
     if (list.length == 1) {
         keyword = list[0];
@@ -454,7 +469,7 @@ function applyKeywordWallpaper(callback) {
     if (settings.filters.MRW && settings.resolution.width != 0 && settings.resolution.height != 0) {
         url += '&resolutions=' + settings.resolution.width + 'x' + settings.resolution.height;
     }
-    
+
     getMaxPageNumber(url, function (maxPageNumber) {
         // since now max page number is now available, re-compute the URL to get random wallpaper from the random page ...
         var randomPageNumber = getRandom(maxPageNumber);
@@ -463,8 +478,8 @@ function applyKeywordWallpaper(callback) {
             url += '&resolutions=' + settings.resolution.width + 'x' + settings.resolution.height;
         }
         fetchIDs(url, function (list) {
-            downloadWallpaper(getRandom(list), function (path) {
-                setWallpaper(path, callback);
+            downloadWallpaper(getRandom(list), function (wallpaperPath) {
+                setWallpaper(wallpaperPath, processCompletedCallback);
             });
         });
     });

@@ -518,13 +518,9 @@
         //$("#settingsModal").modal('show');
         
       // tooltip plugin
-        $('[data-toggle="tooltip"]').tooltip({ container: 'body' });
-        
         $('[data-toggle="tooltip"]').click(function(){
-            console.log('click captured');
             $('.tooltip').not($(this)).hide();
-        });
-        
+        }).tooltip({ container: 'body' });
         
         window.onscroll = function(ev) {
           if ((window.innerHeight + window.scrollY) + 100 >= document.body.offsetHeight) {
@@ -537,7 +533,6 @@
       });
       
       function enableGallery() {
-        console.log('enableGallery function fired');
         $('.offline-gallery a.wallpaper-image-a').fullsizable({
           clickBehaviour: 'next',
           detach_id: 'wrapper'
