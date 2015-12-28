@@ -254,7 +254,7 @@ function validateAndSetWallpaper(wallpaper, callback) {
     }
   
     // checking if wallpaper is already available.
-    finder.in(store.get('wallpaperPath').toString()).findFiles(searchPattern, function (files) {
+    finder.in(store.get('settings').downloadPath).findFiles(searchPattern, function (files) {
         // wallpaper doesn't already exists, let's download first and then set system wallpaper.
         if (files.length == 0) {
             downloadWallpaper(wallpaper, function (localPath) {

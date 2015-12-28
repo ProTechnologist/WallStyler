@@ -132,3 +132,13 @@
       margin: 150px auto;
       margin-bottom: 0;
     }
+    
+    .tab-content {
+            padding: 15px 15px 0 0;
+        }
+        
+        .form-control {
+            background-color: #1c1e22;
+            border: 1px solid #0c0d0e;
+            color: white;
+        }

@@ -300,7 +300,6 @@ var appCtrl = WallStyler.controller('appCtrl', ['$scope', 'toastr', '$window', f
     }
     
     /********** Automatic wallpaper Changer public functions **********/
-
     $scope.toggleAutomaticWallpaperChanger = function () {
         $scope.settings.scheduler.enableWallpaperChanger = !$scope.settings.scheduler.enableWallpaperChanger;
         api.saveChanges($scope.settings, function () {
@@ -310,8 +309,6 @@ var appCtrl = WallStyler.controller('appCtrl', ['$scope', 'toastr', '$window', f
             else {
                 toastr.info('Automatic wallpaper changer has stopped now.');
             }
-
         });
     }
-
 }]);

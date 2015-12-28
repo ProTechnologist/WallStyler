@@ -14,15 +14,7 @@
     <link rel="stylesheet" type="text/css" href="app_modules/bootstrap-timepicker/css/bootstrap-timepicker.css"></link>
 
     <style>
-        .tab-content {
-            padding: 15px 15px 0 0;
-        }
-        
-        .form-control {
-            background-color: #1c1e22;
-            border: 1px solid #0c0d0e;
-            color: white;
-        }
+
     </style>
 
 </head>
@@ -161,7 +153,7 @@
                       <strong>Warning:   </strong>
                       Scheduler remains ineffective because download folder has not been selected or is not available.
                       <span data-dismiss="alert" style="cursor:pointer; float:right; font-weight:bold">X</span>
-                  </div>
+                    </div>
                 </div>
 
                 <div class="row">
@@ -237,13 +229,13 @@
             </div>
 
             <div class="tab-pane fade" id="Others">
-                
-                <!-- warning control -->  
+
+                <!-- warning control -->
                 <div class="col-md-12" ng-show="settings.downloadPath == null">
-                  <div class="alert alert-warning">
-                      <strong>Warning:   </strong>
-                      Filters targetting online wallpaper will remains ineffective as download folder is not selected.
-                  </div>
+                    <div class="alert alert-warning">
+                        <strong>Warning:   </strong> Filters targetting online wallpaper will remains ineffective as download
+                        folder is not selected.
+                    </div>
                 </div>
 
                 <!--info control-->
@@ -527,6 +519,13 @@
         
       // tooltip plugin
         $('[data-toggle="tooltip"]').tooltip({ container: 'body' });
+        
+        $('[data-toggle="tooltip"]').click(function(){
+            console.log('click captured');
+            $('.tooltip').not($(this)).hide();
+        });
+        
+        
         window.onscroll = function(ev) {
           if ((window.innerHeight + window.scrollY) + 100 >= document.body.offsetHeight) {
               angular.element($('div.wallpapers').scope().loadMore());
@@ -535,8 +534,6 @@
         
         // replacing following design-time initialization with the jQuery's live event ....
         $('.timepicker').timepicker();
-        
-        
       });
       
       function enableGallery() {
@@ -547,9 +544,6 @@
         });
       }
       
-      function callMe() {
-          alert('called from angular controller');
-      }
     </script>
     </div>
 </body>
