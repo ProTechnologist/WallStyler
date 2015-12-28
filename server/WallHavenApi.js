@@ -337,7 +337,10 @@ function disableSchedular() {
  
 // responsible for enabling timer for the automatic wallpaper changer 
 function enableScheduler() {
-
+    
+    // just to make sure that the timer is properly clear (if case of any schedule existence)
+    disableSchedular();
+    
     var settings = store.get('settings');
     if (settings.scheduler.scheduleTextExpression.length != 0) {
         var scheduler = later.parse.text(settings.scheduler.scheduleTextExpression);
