@@ -29,6 +29,9 @@ var appCtrl = WallStyler.controller('appCtrl', ['$scope', 'toastr', '$window', f
         api.init(function (settings) {
             //$scope.localFolderPath = path.toString();
             $scope.settings = settings;
+            
+            // letting NodeJs server know about client screen resolution in case if keyword based search is used via automatic wallpaper changer.
+            api.updateResolutionInfo($window.screen.width, $window.screen.height);
         });
     }
 
@@ -115,7 +118,7 @@ var appCtrl = WallStyler.controller('appCtrl', ['$scope', 'toastr', '$window', f
 
     $scope.saveChanges = function () {
         api.saveChanges($scope.settings, function () {
-            $scope.showOfflineWallpapers();
+            //$scope.showOfflineWallpapers();
             toastr.success('Settings have been applied successfully.');
         });
     }

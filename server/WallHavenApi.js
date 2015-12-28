@@ -44,7 +44,6 @@ function fetchIDs(url, fetchIDsCompleted) {
             //updating URLs for the thumbnails and wallpapers.
             for (var i in wallpaperThumbs) {
                 wallpaperThumbs[i].thumbnailUrl = getThumbnailUrl(wallpaperThumbs[i].id, wallpaperThumbs[i].ext);
-                //wallpaperThumbs[i].wallpaperUrl = getWallpaperUrl(wallpaperThumbs[i].id, wallpaperThumbs[i].ext);
             }
 
             fetchIDsCompleted(wallpaperThumbs);
@@ -53,6 +52,32 @@ function fetchIDs(url, fetchIDsCompleted) {
             fetchIDsCompleted(null);
         }
     });
+}
+
+function getMaxPageNumber(url, callback) {
+    var maxPageNumber = 0;
+    try {
+        request(url, function (error, response, body) {
+            if (!error && response.statusCode == 200) {
+                var $page = cheerio.load(body);
+
+                var pageInfo = $page(".thumb-listing-page > header:nth-child(1)").text();
+
+                if (pageInfo.indexOf('/') > 0) {
+                    var maxPageNumber = pageInfo.split('/')[1].trim();
+                    callback(parseInt(maxPageNumber));
+                }
+                else {
+                    maxPageNumber = 1;
+                }
+            }
+
+            callback(parseInt(maxPageNumber));
+        });
+    }
+    catch (ex) {
+        console.log(ex.message);
+    }
 }
 
 // responsible for getting wallpaper thumbnail's URL.
@@ -88,9 +113,17 @@ function initialize(callback) {
     
         // automatic wallpaper changer - selection for wallpapers that will be used to set as desktop wallpapers
         settings.filters = new Object();
-        settings.filters.useOfflineWallpapers = false;
-        settings.filters.useRandomWallpapers = false;
-        settings.filters.useLatestWallpapers = false;
+        settings.filters.includeOfflineWallpapers = false;
+        settings.filters.includeRandomWallpapers = false;
+        settings.filters.includeLatestWallpapers = false;
+        settings.filters.includeKeywords = false;
+        settings.filters.keywords = null;
+        settings.filters.MRW = true;
+        
+        // creating default placeholders for the resolution
+        settings.resolution = new Object();
+        settings.resolution.width = 0;
+        settings.resolution.height = 0;
 
         store.set('settings', settings);
     }
@@ -107,6 +140,10 @@ function initialize(callback) {
         });
 
         settings.downloadPath = ToDisplayPath(settings.downloadPath);
+    }
+
+    if (settings.scheduler.changeOnStartup) {
+        changeScheduledWallpaper();
     }
 
     enableScheduler();
@@ -248,6 +285,16 @@ function deleteWallpaper(filePath, callback) {
     fs.unlink(filePath, callback);
 }
 
+function updateResolutionInfo(width, height) {
+
+    var settings = store.get('settings');
+
+    settings.resolution.width = width;
+    settings.resolution.height = height;
+
+    store.set('settings', settings);
+}
+
 /***************** Automatic Wallapper Changer Scheduler (LaterJs) *****************/
 
 // responsible for getting the text expression for the schedule
@@ -296,17 +343,18 @@ function updateSchedularStatus(status) {
 
 function changeScheduledWallpaper() {
     var settings = store.get('settings');
-    if (settings != null && settings.scheduler.enableWallpaperChanger) {
+    if (settings != null && settings.downloadPath != null && settings.scheduler.enableWallpaperChanger) {
 
         var filters = settings.filters;
-        if (filters.useOfflineWallpapers || filters.useRandomWallpapers || filters.useLatestWallpapers) {
+        if (filters.includeOfflineWallpapers || filters.useRandomWallpapers || filters.useLatestWallpapers || filters.includeKeywords) {
             
             // finding random filter among offline, random and latest wallpapers as assigning numerical values to each filter
             var list = [];
             var wallpaperSourceType = 0;
-            if (filters.useOfflineWallpapers) list.push(1);
-            if (filters.useRandomWallpapers) list.push(2);
-            if (filters.useLatestWallpapers) list.push(3);
+            if (filters.includeOfflineWallpapers) list.push(1);
+            if (filters.includeRandomWallpapers) list.push(2);
+            if (filters.includeLatestWallpapers) list.push(3);
+            if (filters.includeKeywords) list.push(4);
             
             // checking if list is empty, return ...
             if (list.length == 0) {
@@ -335,6 +383,12 @@ function changeScheduledWallpaper() {
             }
             if (wallpaperSourceType == 3) { // set random wallpaper from the collection of 'latest' wallpapers
                 applyOnlineWallpaper('latest', function () {
+                    // notify
+                });
+            }
+
+            if (wallpaperSourceType == 4) { // set random wallpaper from the collection of 'latest' wallpapers
+                applyKeywordWallpaper(settings.filters.keywords, function () {
                     // notify
                 });
             }
@@ -369,6 +423,69 @@ function applyOnlineWallpaper(type, callback) {
     callback();
 }
 
+function applyKeywordWallpaper(callback) {
+
+    var settings = store.get('settings');
+    var array = settings.filters.keywords;
+
+    if (array == null) {
+        callback(null);
+    }
+
+    var keyword = null,
+        list = null;
+
+    list = array.split(',');
+
+    if (list.length == 0) {
+        callback(null);
+    }
+    if (list.length == 1) {
+        keyword = list[0];
+    }
+    else {
+        keyword = getRandom(list).trim();
+    }
+
+    console.log('random keyword: ' + keyword);
+    
+    // applying wallpaper.
+    var url = baseUrl + "search?q=" + keyword;
+    
+    // filtering wallpapers based on the client resolution.
+    if (settings.filters.MRW && settings.resolution.width != 0 && settings.resolution.height != 0) {
+        url += '&resolutions=' + settings.resolution.width + 'x' + settings.resolution.height;
+    }
+
+    console.log('final url: ' + url);
+    getMaxPageNumber(url, function (maxPageNumber) {
+        
+        // since now max page number is now available, re-compute the URL to get random wallpaper from the random page ...
+
+        console.log('max page number: ' + maxPageNumber);
+        // computing URL ..
+        var randomPageNumber = getRandom(maxPageNumber);
+
+        console.log('random page number: ' + randomPageNumber);
+
+        url = baseUrl + "search?q=" + keyword + "&page=" + randomPageNumber;
+
+        if (settings.filters.MRW && settings.resolution.width != 0 && settings.resolution.height != 0) {
+            url += '&resolutions=' + settings.resolution.width + 'x' + settings.resolution.height;
+        }
+
+        console.log('url: ' + url);
+
+        fetchIDs(url, function (list) {
+            downloadWallpaper(getRandom(list), function (path) {
+                //setWallpaper(path, callback);
+                console.log('download complete ...');
+            });
+        });
+    });
+}
+
+
 module.exports.load = load;
 module.exports.downloadWallpaper = downloadWallpaper;
 module.exports.getOfflineWallpapers = getOfflineWallpapers;
@@ -377,6 +494,7 @@ module.exports.setWallpaper = validateAndSetWallpaper;
 module.exports.saveChanges = saveChanges;
 module.exports.getSettings = getSettings;
 module.exports.deleteWallpaper = deleteWallpaper;
+module.exports.updateResolutionInfo = updateResolutionInfo;
 
 
 /*********** following code is not in use ****************/
