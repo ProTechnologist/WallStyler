@@ -11,7 +11,11 @@ WallStyler, at present, uses the wallpaper collection from WallHaven.
 
 In future additional sources may be added. Moreover, this software will allow you to view your acocunt's wallpapers/images from online sources like WallHaven.
 
-<a href="http://www.freeimagehosting.net/commercial-photography/illinois/chicago/"><img src="http://i.imgur.com/N4L9DDO.png" alt="Chicago commercial photographers"></a>
+<a href="#"><img src="http://i.imgur.com/N4L9DDO.png" alt="WallStyler"></a>
+<a href="#"><img src="http://i.imgur.com/QYxEJSq.png" alt="WallStyler"></a>
+<a href="#"><img src="http://i.imgur.com/NjM4n7q.png" alt="WallStyler"></a>
+<a href="#"><img src="http://i.imgur.com/ktZYEcn.png" alt="WallStyler"></a>
+<a href="#"><img src="http://i.imgur.com/Qo74lYa.png" alt="WallStyler"></a>
 
 Following Features are supported:
 
@@ -23,3 +27,4 @@ Following Features are supported:
 * Infinite scrolling.
 * Wallpaper slideshow for available wallpaper (supporting full-screen mode)
 * touch-Swype Gestures are supported while viewing wallpapers in slide show mode.
+* Built-in scheduler along with the filters that can download latest wallpapers.
