@@ -28,3 +28,5 @@ Following Features are supported:
 * Wallpaper slideshow for available wallpaper (supporting full-screen mode)
 * touch-Swype Gestures are supported while viewing wallpapers in slide show mode.
 * Built-in scheduler along with the filters that can download latest wallpapers.
+* Built-in scheduler to download new wallpapers automatically as per scheduled intervals
+* Built-in schedule filters in order to filters to wallpapers to be downloaded and applying them as desktop wallpapers.
