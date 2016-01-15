@@ -30,3 +30,5 @@ Following Features are supported:
 * Built-in scheduler along with the filters that can download latest wallpapers.
 * Built-in scheduler to download new wallpapers automatically as per scheduled intervals
 * Built-in schedule filters in order to filters to wallpapers to be downloaded and applying them as desktop wallpapers.
+
+I've no affiliation with WallBase / WallHaven.
