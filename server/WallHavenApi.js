@@ -229,7 +229,7 @@ function downloadWallpaper(wallpaper, downloadCompletedCallback) {
         if (!error && response.statusCode == 200) {
             var $c = cheerio.load(body);
             $c("img[id='wallpaper']").each(function (index, element) {
-                url = "http:" + $c(element).attr('src');
+                url = "http:" + $c(element).attr('data-cfsrc');
                 var localPath = store.get('settings').downloadPath + '\\' + path.basename(url).replace('wallhaven-', '');
                 request(url).pipe(fs.createWriteStream(localPath)).on('close', function () {
                     downloadCompletedCallback(localPath);
